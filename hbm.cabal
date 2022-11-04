@@ -34,10 +34,12 @@ executable hbm
   build-depends:
       base >=4.7 && <5
     , containers
+    , directory
     , optparse-applicative
     , selda
     , selda-sqlite
     , text
+    , xdg-basedir
   default-language: Haskell2010
 
 test-suite hbm-test
@@ -51,9 +53,11 @@ test-suite hbm-test
   build-depends:
       base >=4.7 && <5
     , containers
+    , directory
     , hbm
     , optparse-applicative
     , selda
     , selda-sqlite
     , text
+    , xdg-basedir
   default-language: Haskell2010

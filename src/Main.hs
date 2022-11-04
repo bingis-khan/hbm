@@ -21,8 +21,15 @@ import Types (asRow)
 import Options.Applicative (auto)
 import Options.Applicative (progDesc)
 import Options.Applicative (idm)
+import System.Environment.XDG.BaseDir (getUserDataFile, getUserDataDir)
+import System.Directory (createDirectoryIfMissing)
 
 
+
+
+xdgDirName, dbName :: String
+xdgDirName = "hbm"
+dbName = "bms.sqlite"
 
 data Bookmark = Bookmark
     {   link :: Text
@@ -66,11 +73,19 @@ printBookmarks path = do
     bks <- listBookmarks path
     traverse_ (TIO.putStrLn . asRow) bks 
 
+secureFilePath :: IO FilePath
+secureFilePath = do
+    -- Ensure directory exists.
+    dir <- getUserDataDir xdgDirName
+    createDirectoryIfMissing True dir
+
+    getUserDataFile xdgDirName dbName
+
 main :: IO ()
 main = do
     action <- execParser $ info (opts <**> helper) mempty
 
-    let db = "bms.sqlite"
+    db <- secureFilePath
     initDB db
     case action of
         AddBK Bookmark { link, tags, description } -> do

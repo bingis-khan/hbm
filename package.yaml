@@ -26,6 +26,8 @@ dependencies:
 - selda
 - selda-sqlite
 - containers
+- xdg-basedir
+- directory
 
 ghc-options:
 - -Wall
